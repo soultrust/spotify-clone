@@ -1,10 +1,11 @@
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { ChevronDownIcon } from "@heroicons/react/outline";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { playlistIdState, playlistState } from "../atoms/playlistAtom";
 import { shuffle } from "lodash";
 import useSpotify from "../hooks/useSpotify";
+import Songs from "./Songs";
 
 const colors = [
   "from-indigo-500",
@@ -36,9 +37,12 @@ const Center = () => {
   }, [playlistId, setPlaylist, spotifyApi]);
 
   return (
-    <div className="flex-grow">
+    <div className="flex-grow h-screen overflow-y-scroll scrollbar-hide">
       <header className="absolute top-5 right-8">
-        <div className="flex items-center bg-black text-white space-x-3 opacity-90 hover:opacity-80 cursor-pointer rounded-full p-1 pr-2">
+        <div
+          className="flex items-center bg-black text-white space-x-3 opacity-90 hover:opacity-80 cursor-pointer rounded-full p-1 pr-2"
+          onClick={signOut}
+        >
           <img
             className="rounded-full w-10 h-10"
             src={session?.user.image}
@@ -56,11 +60,8 @@ const Center = () => {
           src={playlist?.images?.[0]?.url}
           alt=""
         />
-        <div>
-          <p>PLAYLIST</p>
-          <h1 className="text-2xl md:text-5xl font-bold">{playlist?.name}</h1>
-        </div>
       </section>
+      <Songs />
     </div>
   );
 };
