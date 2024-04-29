@@ -10,6 +10,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { playlistIdState } from "../atoms/playlistAtom";
+import { deviceIdState } from "../atoms/deviceAtom";
 import useSpotify from "../hooks/useSpotify";
 
 function Sidebar() {
@@ -17,6 +18,7 @@ function Sidebar() {
   const { data: session, status } = useSession();
   const [playlists, setPlaylists] = useState([]);
   const [playlistId, setPlaylistId] = useRecoilState(playlistIdState);
+  const [deviceId, setDeviceId] = useRecoilState(deviceIdState);
 
   console.log("you picked playlist: ", playlistId);
 
@@ -28,7 +30,7 @@ function Sidebar() {
           console.log(deviceId);
           spotifyApi
             .getUserPlaylists({
-              device_id: "0e513663d75b15476b17e0d8b49a6ca3b0c2ab99",
+              device_id: deviceId,
             })
             .then((data) => {
               console.log("return: ", data);

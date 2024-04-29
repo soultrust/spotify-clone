@@ -16,6 +16,7 @@ import useSpotify from "../hooks/useSpotify";
 import useSongInfo from "../hooks/useSongInfo";
 import { useRecoilState } from "recoil";
 import { currentTrackIdState, isPlayingState } from "../atoms/songAtom";
+import { deviceIdState } from "../atoms/deviceAtom";
 import { useEffect, useState, useCallback } from "react";
 import { set } from "lodash";
 
@@ -25,6 +26,7 @@ function Player() {
   const [currentTrackId, setCurrentTrackId] =
     useRecoilState(currentTrackIdState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
+  const [deviceId, setDeviceId] = useRecoilState(deviceIdState);
   const [volume, setVolume] = useState(50);
   const songInfo = useSongInfo();
 
@@ -32,14 +34,14 @@ function Player() {
     if (!songInfo) {
       spotifyApi
         .getMyCurrentPlayingTrack({
-          device_id: "0e513663d75b15476b17e0d8b49a6ca3b0c2ab99",
+          device_id: deviceId,
         })
         .then((data) => {
           console.log("Now playing: ", data.body?.item);
           setCurrentTrackId(data.body?.item?.id);
           spotifyApi
             .getMyCurrentPlaybackState({
-              device_id: "0e513663d75b15476b17e0d8b49a6ca3b0c2ab99",
+              device_id: deviceId,
             })
             .then((data) => {
               console.log("error: ", data);
