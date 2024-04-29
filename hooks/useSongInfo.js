@@ -11,16 +11,16 @@ function useSongInfo() {
 
   useEffect(() => {
     const fetchSongInfo = async () => {
+      console.log("fetchsong info", songInfo);
       if (currentIdTrack) {
         const trackInfo = await fetch(
-          `https://api.spotify.com/v1/tracks/${currentIdTrack}`,
+          `https://api.spotify.com/v1/tracks/${currentIdTrack}?device_id=0e513663d75b15476b17e0d8b49a6ca3b0c2ab99`,
           {
             headers: {
               Authorization: `Bearer ${spotifyApi.getAccessToken()}`,
             },
           }
         ).then((res) => res.json());
-
         setSongInfo(trackInfo);
       }
     };

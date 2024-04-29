@@ -25,10 +25,15 @@ function Sidebar() {
       spotifyApi.getMyDevices().then((data) => {
         if (data.body?.devices[0]?.id) {
           const deviceId = data.body?.devices[0]?.id;
-          spotifyApi.getUserPlaylists({ deviceId }).then((data) => {
-            console.log("return: ", data);
-            setPlaylists(data.body.items);
-          });
+          console.log(deviceId);
+          spotifyApi
+            .getUserPlaylists({
+              device_id: "0e513663d75b15476b17e0d8b49a6ca3b0c2ab99",
+            })
+            .then((data) => {
+              console.log("return: ", data);
+              setPlaylists(data.body.items);
+            });
         }
       });
     }
@@ -55,12 +60,12 @@ function Sidebar() {
           <PlusCircleIcon className="h-5 w-5" />
           <p>Create Playlist</p>
         </button>
-        <button className="flex items-center text-blue-500 bspace-x-2 hover:text-white">
-          <HeartIcon className="h-5 w-5" />
+        <button className="flex items-center bspace-x-2 hover:text-white">
+          <HeartIcon className="h-5 w-5 text-blue-500" />
           <p>Liked Songs</p>
         </button>
         <button className="flex items-center space-x-2 hover:text-white">
-          <RssIcon className="h-5 w-5" />
+          <RssIcon className="h-5 w-5 text-blue-500" />
           <p>Your Episodes</p>
         </button>
         <hr className="border-t-[0.1px] border-gray-900" />

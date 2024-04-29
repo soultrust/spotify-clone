@@ -30,20 +30,27 @@ function Player() {
 
   const fetchCurrentSong = () => {
     if (!songInfo) {
-      spotifyApi.getMyCurrentPlayingTrack().then((data) => {
-        console.log("Now playing: ", data.body?.item);
-        setCurrentTrackId(data.body?.item?.id);
-
-        spotifyApi.getMyCurrentPlaybackState().then((data) => {
-          setIsPlaying(data.body?.is_playing);
+      spotifyApi
+        .getMyCurrentPlayingTrack({
+          device_id: "0e513663d75b15476b17e0d8b49a6ca3b0c2ab99",
+        })
+        .then((data) => {
+          console.log("Now playing: ", data.body?.item);
+          setCurrentTrackId(data.body?.item?.id);
+          spotifyApi
+            .getMyCurrentPlaybackState({
+              device_id: "0e513663d75b15476b17e0d8b49a6ca3b0c2ab99",
+            })
+            .then((data) => {
+              console.log("error: ", data);
+              setIsPlaying(data.body?.is_playing);
+            });
         });
-      });
     }
   };
 
   const handlePlayPause = () => {
-    spotifyApi.getMyCurrentPlaybackState().then(() => {
-      if (!data) return;
+    spotifyApi.getMyCurrentPlaybackState().then((data) => {
       if (data.body.is_playing) {
         spotifyApi.pause();
         setIsPlaying(false);
@@ -69,7 +76,9 @@ function Player() {
 
   const debouncedAdjustVolume = useCallback(
     debounce((volume) => {
-      spotifyApi.setVolume(volume);
+      spotifyApi.setVolume(volume, {
+        device_id: "0e513663d75b15476b17e0d8b49a6ca3b0c2ab99",
+      });
     }, 500),
     []
   );
