@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { currentTrackIdState } from "../atoms/songAtom";
+import { deviceIdState } from "../atoms/deviceAtom";
 import useSpotify from "./useSpotify";
 
 function useSongInfo() {
@@ -8,13 +9,14 @@ function useSongInfo() {
   const [currentIdTrack, setCurrentIdTrack] =
     useRecoilState(currentTrackIdState);
   const [songInfo, setSongInfo] = useState(null);
-
+  const [deviceId, setDeviceId] = useRecoilState(deviceIdState);
+  console.log("deviceId: ", deviceId);
   useEffect(() => {
     const fetchSongInfo = async () => {
       console.log("fetchsong info", songInfo);
       if (currentIdTrack) {
         const trackInfo = await fetch(
-          `https://api.spotify.com/v1/tracks/${currentIdTrack}?device_id=0e513663d75b15476b17e0d8b49a6ca3b0c2ab99`,
+          `https://api.spotify.com/v1/tracks/${currentIdTrack}?device_id=${deviceId}`,
           {
             headers: {
               Authorization: `Bearer ${spotifyApi.getAccessToken()}`,
